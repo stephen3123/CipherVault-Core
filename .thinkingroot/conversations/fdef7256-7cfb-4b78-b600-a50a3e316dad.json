@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "id": "fdef7256-7cfb-4b78-b600-a50a3e316dad",
+    "workspace": "CipherVault",
+    "title": "hy",
+    "created_at": "2026-05-12T04:40:19.528802Z",
+    "updated_at": "2026-05-12T04:40:21.875844Z",
+    "message_count": 2
+  },
+  "messages": [
+    {
+      "id": "64cda730-447a-4a3a-ad18-e3de347a6967",
+      "role": "user",
+      "content": "hy",
+      "model": null,
+      "created_at": "2026-05-12T04:40:19.544890Z",
+      "claims_used": []
+    },
+    {
+      "id": "4e882620-55ad-478f-917f-0267b6d3205d",
+      "role": "assistant",
+      "content": "Hey — I only got `hy`. If you meant to ask something about CipherVault, send the rest and I’ll answer from the workspace with citations.",
+      "model": null,
+      "created_at": "2026-05-12T04:40:21.875844Z",
+      "claims_used": []
+    }
+  ]
+}

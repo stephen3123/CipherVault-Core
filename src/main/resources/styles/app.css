@@ -1,0 +1,239 @@
+.root {
+    -fx-font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+}
+
+.auth-root,
+.dashboard-root {
+    -fx-background-color: linear-gradient(to bottom right, #f5f0e8 0%, #dcebe6 45%, #eff6f4 100%);
+}
+
+.auth-shell {
+    -fx-alignment: center;
+}
+
+.hero-panel {
+    -fx-padding: 34;
+    -fx-background-color: linear-gradient(to bottom right, rgba(20, 70, 69, 0.95), rgba(23, 47, 87, 0.92));
+    -fx-background-radius: 28;
+    -fx-effect: dropshadow(gaussian, rgba(11, 24, 38, 0.16), 24, 0.22, 0, 10);
+}
+
+.form-pane {
+    -fx-alignment: center;
+}
+
+.panel-card {
+    -fx-background-color: rgba(255, 255, 255, 0.92);
+    -fx-background-radius: 26;
+    -fx-border-radius: 26;
+    -fx-border-color: rgba(16, 48, 70, 0.08);
+    -fx-padding: 24;
+    -fx-effect: dropshadow(gaussian, rgba(10, 30, 50, 0.08), 18, 0.18, 0, 8);
+}
+
+.auth-card {
+    -fx-min-width: 410;
+}
+
+.eyebrow-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #d1f0e5;
+    -fx-letter-spacing: 1.4px;
+}
+
+.hero-title {
+    -fx-font-size: 42px;
+    -fx-font-weight: 800;
+    -fx-text-fill: white;
+}
+
+.hero-copy {
+    -fx-font-size: 16px;
+    -fx-line-spacing: 2px;
+    -fx-text-fill: rgba(242, 247, 249, 0.92);
+}
+
+.card-title,
+.page-title,
+.section-title {
+    -fx-text-fill: #17364f;
+    -fx-font-weight: 800;
+}
+
+.card-title {
+    -fx-font-size: 27px;
+}
+
+.page-title {
+    -fx-font-size: 32px;
+}
+
+.section-title {
+    -fx-font-size: 22px;
+}
+
+.page-subtitle,
+.section-subtitle,
+.metric-copy,
+.insight-copy,
+.feedback-label,
+.field-label {
+    -fx-text-fill: #5f7284;
+}
+
+.page-subtitle,
+.section-subtitle,
+.metric-copy,
+.insight-copy,
+.feedback-label {
+    -fx-font-size: 14px;
+}
+
+.field-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+}
+
+.text-input {
+    -fx-background-color: #f9fbfb;
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(25, 59, 74, 0.16);
+    -fx-border-radius: 16;
+    -fx-padding: 14 16 14 16;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1b3147;
+}
+
+.text-input:focused {
+    -fx-border-color: #0f7a6d;
+    -fx-background-color: white;
+}
+
+.action-button {
+    -fx-background-radius: 16;
+    -fx-padding: 12 18 12 18;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-cursor: hand;
+}
+
+.primary-button {
+    -fx-background-color: linear-gradient(to right, #0f7a6d, #145e74);
+    -fx-text-fill: white;
+}
+
+.secondary-button {
+    -fx-background-color: #e6f3ef;
+    -fx-text-fill: #164459;
+}
+
+.ghost-button {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(19, 53, 78, 0.15);
+    -fx-border-radius: 16;
+    -fx-text-fill: #17364f;
+}
+
+.danger-button {
+    -fx-background-color: #f8dfd8;
+    -fx-text-fill: #8c3b33;
+}
+
+.metric-card {
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-background-radius: 24;
+    -fx-border-color: rgba(24, 58, 70, 0.08);
+    -fx-border-radius: 24;
+    -fx-padding: 20;
+}
+
+.metric-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #5d7081;
+}
+
+.metric-value {
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #17364f;
+}
+
+.insight-tile {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 18;
+    -fx-padding: 16;
+}
+
+.insight-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: 800;
+    -fx-text-fill: white;
+}
+
+.insight-copy {
+    -fx-text-fill: rgba(237, 246, 247, 0.88);
+}
+
+.vault-table,
+.audit-list {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(15, 48, 63, 0.08);
+    -fx-border-radius: 18;
+    -fx-background-radius: 18;
+}
+
+.vault-table .column-header-background {
+    -fx-background-color: rgba(15, 122, 109, 0.08);
+    -fx-background-radius: 18 18 0 0;
+}
+
+.vault-table .column-header,
+.vault-table .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.vault-table .column-header .label {
+    -fx-font-weight: 800;
+    -fx-text-fill: #23445c;
+}
+
+.vault-table .table-row-cell {
+    -fx-background-color: rgba(255, 255, 255, 0.88);
+    -fx-border-color: transparent transparent rgba(23, 54, 79, 0.05) transparent;
+}
+
+.vault-table .table-row-cell:selected {
+    -fx-background-color: rgba(15, 122, 109, 0.16);
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #24465d;
+    -fx-padding: 12 14 12 14;
+    -fx-border-color: transparent transparent rgba(23, 54, 79, 0.06) transparent;
+}
+
+.list-view .list-cell:filled:selected {
+    -fx-background-color: rgba(15, 122, 109, 0.14);
+}
+
+.status-bar {
+    -fx-background-color: rgba(255, 255, 255, 0.72);
+    -fx-background-radius: 16;
+    -fx-padding: 14 16 14 16;
+}
+
+.success-text {
+    -fx-text-fill: #176755;
+}
+
+.error-text {
+    -fx-text-fill: #a23f38;
+}
+
+.neutral-text {
+    -fx-text-fill: #5f7284;
+}

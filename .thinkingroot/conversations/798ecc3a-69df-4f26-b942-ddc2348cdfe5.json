@@ -1,0 +1,44 @@
+{
+  "summary": {
+    "id": "798ecc3a-69df-4f26-b942-ddc2348cdfe5",
+    "workspace": "CipherVault",
+    "title": "hy",
+    "created_at": "2026-05-12T17:05:52.142574Z",
+    "updated_at": "2026-05-12T17:06:04.648461Z",
+    "message_count": 4
+  },
+  "messages": [
+    {
+      "id": "7592d2e1-aa05-4fbe-bf5b-0afa2dee7f26",
+      "role": "user",
+      "content": "hy",
+      "model": null,
+      "created_at": "2026-05-12T17:05:52.162989Z",
+      "claims_used": []
+    },
+    {
+      "id": "714a07e5-08b6-4e84-883d-23b7ed266afd",
+      "role": "assistant",
+      "content": "Hey. I’m here.\n\nI only got `hy`, so I don’t yet have an actual question or task to ground in the workspace. If you want, send the thing you’re trying to figure out in CipherVault — architecture, security flow, a specific class, tests, build issues, whatever — and I’ll answer it with citations from the code/docs.",
+      "model": null,
+      "created_at": "2026-05-12T17:05:55.558959Z",
+      "claims_used": []
+    },
+    {
+      "id": "18703a49-1922-4707-89c9-47226f104603",
+      "role": "user",
+      "content": "how are you ?",
+      "model": null,
+      "created_at": "2026-05-12T17:06:02.681684Z",
+      "claims_used": []
+    },
+    {
+      "id": "a7915ccf-1363-489a-8274-905f51caad02",
+      "role": "assistant",
+      "content": "Doing well.\n\nAnd you?",
+      "model": null,
+      "created_at": "2026-05-12T17:06:04.648461Z",
+      "claims_used": []
+    }
+  ]
+}

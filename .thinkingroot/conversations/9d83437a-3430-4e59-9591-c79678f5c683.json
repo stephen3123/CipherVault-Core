@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "id": "9d83437a-3430-4e59-9591-c79678f5c683",
+    "workspace": "CipherVault",
+    "title": "\"How does CipherVault encrypt files?",
+    "created_at": "2026-05-10T07:37:14.067086Z",
+    "updated_at": "2026-05-10T07:37:53.053110Z",
+    "message_count": 2
+  },
+  "messages": [
+    {
+      "id": "20e15ab6-f00d-44ae-8893-afa0ea3b9911",
+      "role": "user",
+      "content": "\"How does CipherVault encrypt files?",
+      "model": null,
+      "created_at": "2026-05-10T07:37:39.568555Z",
+      "claims_used": []
+    },
+    {
+      "id": "e86805a8-400b-4fb7-b6d2-8ba7b1907837",
+      "role": "assistant",
+      "content": "CipherVault encrypts files with **AES-GCM** using a key derived from your **master password**.\n\nThe flow is:\n\n- Your password is turned into an encryption key with **`PBKDF2WithHmacSHA256`** using a **random salt** and **310,000 iterations**:  \n  “uses `PBKDF2WithHmacSHA256` with a random salt to turn your password into an encryption key” (README.md) [claim:01KR7M5M5WVFZ8YQMM0Z51JGZ7]  \n  “your master password is hashed with `PBKDF2WithHmacSHA256` (random salt, 310 000 iterations) … The same password is used to derive the AES key.” (README.md)\n\n- When you import a file, CipherVault encrypts it **before it touches disk**:  \n  “every file you import is encrypted with `AES/GCM/NoPadding` before it touches disk” (README.md)  \n  “On import — the file is read into memory, encrypted with AES-256-GCM (random IV), and written to `~/.ciphervault/vault/`. Only the ciphertext ever touches disk.” (README.md) [claim:01KR7M5M5WJ382N2NKJTAC961M]\n\n- In code, `CryptoService` does this with Java’s AES-GCM cipher and a fresh random IV each time:  \n  `Cipher.getInstance(\"AES/GCM/NoPadding\");` `src/main/java/com/ciphervault/security/CryptoService.java:18`  \n  `secureRandom.nextBytes(iv);` `src/main/java/com/ciphervault/security/CryptoService.java:16`  \n  `new GCMParameterSpec(TAG_LENGTH_BITS, iv)` `src/main/java/com/ciphervault/security/CryptoService.java:19`  \n  That’s the implementation behind “CryptoService.encrypt uses AES/GCM/NoPadding.” [claim:01KR7JVCSVGY3FGE4ETNWDT5YY]\n\n- It uses:\n  - **12-byte IVs**: `private static final int IV_LENGTH_BYTES = 12;` `src/main/java/com/ciphervault/security/CryptoService.java:9`\n  - **128-bit authentication tags**: `private static final int TAG_LENGTH_BITS = 128;` `src/main/java/com/ciphervault/security/CryptoService.java:10`\n\n- On decrypt/export, it reverses the process in memory:  \n  `Cipher.getInstance(\"AES/GCM/NoPadding\");` `src/main/java/com/ciphervault/security/CryptoService.java:29`  \n  `cipher.doFinal(payload.ciphertext());` `src/main/java/com/ciphervault/security/CryptoService.java:34`  \n  matching “On export, the encrypted blob is decrypted in memory” (README.md).\n\nOne extra detail from the code: CipherVault also supports **associated authenticated data (AAD)** during encryption/decryption via `cipher.updateAAD(associatedData);` `src/main/java/com/ciphervault/security/CryptoService.java:21` and `src/main/java/com/ciphervault/security/CryptoService.java:32`. That means it can authenticate extra metadata along with the ciphertext.\n\nSo, short version: **password-derived AES key + random salt for derivation + random IV per file + AES/GCM authenticated encryption + only ciphertext written to disk**.",
+      "model": null,
+      "created_at": "2026-05-10T07:37:53.053110Z",
+      "claims_used": []
+    }
+  ]
+}

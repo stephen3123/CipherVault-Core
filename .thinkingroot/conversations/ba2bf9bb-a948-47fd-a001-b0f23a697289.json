@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "id": "ba2bf9bb-a948-47fd-a001-b0f23a697289",
+    "workspace": "CipherVault",
+    "title": "hey",
+    "created_at": "2026-05-10T04:12:53.969504Z",
+    "updated_at": "2026-05-10T04:12:59.753813Z",
+    "message_count": 2
+  },
+  "messages": [
+    {
+      "id": "78f5e7a9-4af0-4b0e-9180-ba4538eb1158",
+      "role": "user",
+      "content": "hey",
+      "model": null,
+      "created_at": "2026-05-10T04:12:53.982036Z",
+      "claims_used": []
+    },
+    {
+      "id": "89921e30-7e11-47ea-9a0c-1480caf055ce",
+      "role": "assistant",
+      "content": "Hey.",
+      "model": null,
+      "created_at": "2026-05-10T04:12:59.753813Z",
+      "claims_used": []
+    }
+  ]
+}

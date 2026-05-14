@@ -1,0 +1,59 @@
+package com.ciphervault.db;
+
+import com.ciphervault.model.AuditEntry;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class AuditLogRepository {
+    private final DatabaseManager databaseManager;
+
+    public AuditLogRepository(DatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
+    }
+
+    public void log(String eventType, String details, Instant createdAt) throws SQLException {
+        String sql = """
+                INSERT INTO audit_log (event_type, details, created_at)
+                VALUES (?, ?, ?)
+                """;
+
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, eventType);
+            statement.setString(2, details);
+            statement.setString(3, createdAt.toString());
+            statement.executeUpdate();
+        }
+    }
+
+    public List<AuditEntry> findRecent(int limit) throws SQLException {
+        String sql = """
+                SELECT id, event_type, details, created_at
+                FROM audit_log
+                ORDER BY created_at DESC
+                LIMIT ?
+                """;
+
+        List<AuditEntry> records = new ArrayList<>();
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, limit);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    records.add(new AuditEntry(
+                            resultSet.getLong("id"),
+                            resultSet.getString("event_type"),
+                            resultSet.getString("details"),
+                            Instant.parse(resultSet.getString("created_at"))
+                    ));
+                }
+            }
+        }
+        return records;
+    }
+}

@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "id": "387c0fb8-8e6f-432c-b1e6-173c2fdb7c47",
+    "workspace": "CipherVault",
+    "title": "hey what do you about the project",
+    "created_at": "2026-05-11T19:22:17.272653Z",
+    "updated_at": "2026-05-11T19:22:30.182456Z",
+    "message_count": 2
+  },
+  "messages": [
+    {
+      "id": "bb72034b-052d-4ea7-b460-5de58120385a",
+      "role": "user",
+      "content": "hey what do you about the project",
+      "model": null,
+      "created_at": "2026-05-11T19:22:17.287024Z",
+      "claims_used": []
+    },
+    {
+      "id": "b953a05c-a3d7-4787-9e5f-288f74ba8267",
+      "role": "assistant",
+      "content": "Yeah — I can see the shape of it pretty clearly from the workspace.\n\n**CipherVault** is a local desktop file vault: “everything stored on disk is encrypted, nothing is sent anywhere” `(README.md)` [claim:01KRC692ZSHGXJVPVG57HFC4RH]. The stack in the README is **Java 21**, **JavaFX 21**, **SQLite via `sqlite-jdbc`**, **Maven**, and **JUnit 5** `(README.md)`.\n\n### What it does\nFrom the README, the core features are:\n\n- master password setup and login `(README.md)`\n- password-based key derivation with **`PBKDF2WithHmacSHA256`** `(README.md)`\n- file encryption with **`AES/GCM/NoPadding`** before disk write `(README.md)`\n- local SQLite metadata + audit storage `(README.md)`\n- audit logging for “every login attempt, import, export, and deletion” `(README.md)`\n\nThere’s also a direct code-backed claim that `CryptoService.encrypt` uses **AES/GCM/NoPadding** `src/main/java/com/ciphervault/security/CryptoService.java` [claim:01KR7JVCSVGY3FGE4ETNWDT5YY].\n\n### How it’s organized\nThe README lays out the package structure like this:\n\n- `app/` — entry point\n- `config/` — path config\n- `db/` — database manager + repositories\n- `model/` — records like `UserRecord`, `VaultFileRecord`, `AuditEntry`\n- `security/` — crypto and password logic\n- `service/` — app service layer `(README.md)`\n\nThe most prominent code entities in the indexed graph are **AppService**, **VaultFileRecord**, **UserRepository**, **VaultFileRepository**, **CryptoService**, and **PasswordService**.\n\n### Storage model\nThe README says data lives under:\n\n```text\n~/.ciphervault/\n├── ciphervault.db\n└── vault/\n```\n\nwith the DB holding metadata + audit log, and `vault/` holding encrypted blobs `(README.md)`.\n\n### Security flow\nThe documented flow is:\n\n1. setup hashes the master password with PBKDF2 using a random salt and **310,000 iterations** `(README.md)`\n2. login re-derives and compares `(README.md)`\n3. import encrypts in memory with **AES-256-GCM** and writes ciphertext to disk `(README.md)`\n4. export decrypts in memory and writes to the chosen destination `(README.md)`\n\n### A couple concrete code facts\nI can also ground a few implementation details beyond the README:\n\n- `VaultFileRepository.map` builds `VaultFileRecord` from columns `\"id, original_name, stored_name, mime_type, size_bytes, iv_base64, created_at\"` `src/main/java/com/ciphervault/db/VaultFileRepository.java` [claim:01KR7JVCSSBYRMDKS08GZNFPVC].\n\n### What stands out\nA few things the substrate noticed:\n\n- The workspace is still pretty small: **22 sources, 66 claims, 0 contradictions**.\n- There’s an existing branch named **`feature/aes-review`** `(README.md)`.\n- Most of the indexed knowledge is coming from the README right now, so the high-level architecture is well documented, but I don’t yet have a full grounded picture of UI flow, DB schema creation, or how `AppService` wires everything together from source alone.\n\nIf you want the practical version: this looks like a clean, local-first Java desktop security app with a sensible separation between UI, service, DB, and crypto layers, and the README is unusually explicit about the security model. The thing I’d inspect next is whether the code fully matches the README’s promises around password handling, audit coverage, and “only ciphertext touches disk.”",
+      "model": null,
+      "created_at": "2026-05-11T19:22:30.182456Z",
+      "claims_used": []
+    }
+  ]
+}

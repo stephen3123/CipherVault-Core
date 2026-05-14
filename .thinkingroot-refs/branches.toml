@@ -1,0 +1,26 @@
+[[branch]]
+name = "feature/aes-review"
+slug = "feature-aes-review"
+parent = "main"
+created_at = "2026-05-10T00:23:14.704493Z"
+parent_commit_hash = "7d47079383ac8dc5ddc2eaec8bda0165d94356ae0e12ff39b3bb679761308fc9"
+
+[branch.status]
+type = "Active"
+
+[branch.permissions]
+readers = []
+writers = []
+mergers = []
+
+[branch.kind]
+kind = "feature"
+
+[branch.merge_policy]
+policy = "manual"
+
+[[branch.events]]
+kind = "created"
+at = "2026-05-10T00:23:14.704493Z"
+actor = "system"
+parent = "main"

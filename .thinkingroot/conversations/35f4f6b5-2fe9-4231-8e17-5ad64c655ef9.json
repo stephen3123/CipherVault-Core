@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "id": "35f4f6b5-2fe9-4231-8e17-5ad64c655ef9",
+    "workspace": "CipherVault",
+    "title": "hy",
+    "created_at": "2026-05-12T04:42:39.547434Z",
+    "updated_at": "2026-05-12T04:42:42.347968Z",
+    "message_count": 2
+  },
+  "messages": [
+    {
+      "id": "1127ac69-7e48-4f7c-9e43-d4af264f12f7",
+      "role": "user",
+      "content": "hy",
+      "model": null,
+      "created_at": "2026-05-12T04:42:39.559593Z",
+      "claims_used": []
+    },
+    {
+      "id": "6049cf56-b53c-4091-9ef8-e90ad770fdc4",
+      "role": "assistant",
+      "content": "I don't see what “hy” refers to in the workspace yet.\n\nIf you meant:\n- **“hi”** — hey.\n- **a file / class / symbol** — send the name and I’ll look it up.\n- **“how/why”** about CipherVault — give me the full question and I’ll answer from the code/docs with citations.",
+      "model": null,
+      "created_at": "2026-05-12T04:42:42.347968Z",
+      "claims_used": []
+    }
+  ]
+}

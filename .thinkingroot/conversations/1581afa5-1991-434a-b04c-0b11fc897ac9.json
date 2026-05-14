@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "id": "1581afa5-1991-434a-b04c-0b11fc897ac9",
+    "workspace": "CipherVault",
+    "title": "hy",
+    "created_at": "2026-05-10T04:15:14.842526Z",
+    "updated_at": "2026-05-10T04:15:17.360514Z",
+    "message_count": 2
+  },
+  "messages": [
+    {
+      "id": "6799da1b-3308-4833-83cb-b45c238b94a6",
+      "role": "user",
+      "content": "hy",
+      "model": null,
+      "created_at": "2026-05-10T04:15:14.858596Z",
+      "claims_used": []
+    },
+    {
+      "id": "7b482a1f-e12f-41af-931a-8f6dd29628ad",
+      "role": "assistant",
+      "content": "Hey. I’m here.\n\nI only have `hy` from you so far, which looks incomplete. If you meant a greeting: hi.\n\nIf you were starting a question about CipherVault, send the rest and I’ll answer from the workspace with citations.",
+      "model": null,
+      "created_at": "2026-05-10T04:15:17.360514Z",
+      "claims_used": []
+    }
+  ]
+}

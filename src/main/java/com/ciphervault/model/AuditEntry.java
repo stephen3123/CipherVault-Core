@@ -1,0 +1,11 @@
+package com.ciphervault.model;
+
+import java.time.Instant;
+
+public record AuditEntry(
+        long id,
+        String eventType,
+        String details,
+        Instant createdAt
+) {
+}

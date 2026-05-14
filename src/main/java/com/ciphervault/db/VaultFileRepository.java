@@ -1,0 +1,115 @@
+package com.ciphervault.db;
+
+import com.ciphervault.model.VaultFileRecord;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public final class VaultFileRepository {
+    private final DatabaseManager databaseManager;
+
+    public VaultFileRepository(DatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
+    }
+
+    public long insert(VaultFileRecord record) throws SQLException {
+        String sql = """
+                INSERT INTO vault_file (
+                    original_name, stored_name, mime_type,
+                    size_bytes, iv_base64, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """;
+
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, record.originalName());
+            statement.setString(2, record.storedName());
+            statement.setString(3, record.mimeType());
+            statement.setLong(4, record.sizeBytes());
+            statement.setString(5, record.ivBase64());
+            statement.setString(6, record.createdAt().toString());
+            statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getLong(1);
+                }
+            }
+
+            try (Statement fallbackStatement = connection.createStatement();
+                 ResultSet resultSet = fallbackStatement.executeQuery("SELECT last_insert_rowid()")) {
+                if (resultSet.next()) {
+                    return resultSet.getLong(1);
+                }
+            }
+        }
+
+        throw new SQLException("Could not retrieve vault file identifier.");
+    }
+
+    public List<VaultFileRecord> findAll() throws SQLException {
+        String sql = """
+                SELECT id, original_name, stored_name, mime_type,
+                       size_bytes, iv_base64, created_at
+                FROM vault_file
+                ORDER BY created_at DESC
+                """;
+
+        List<VaultFileRecord> records = new ArrayList<>();
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                records.add(map(resultSet));
+            }
+        }
+        return records;
+    }
+
+    public Optional<VaultFileRecord> findById(long id) throws SQLException {
+        String sql = """
+                SELECT id, original_name, stored_name, mime_type,
+                       size_bytes, iv_base64, created_at
+                FROM vault_file
+                WHERE id = ?
+                """;
+
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return Optional.of(map(resultSet));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    public void deleteById(long id) throws SQLException {
+        String sql = "DELETE FROM vault_file WHERE id = ?";
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        }
+    }
+
+    private VaultFileRecord map(ResultSet resultSet) throws SQLException {
+        return new VaultFileRecord(
+                resultSet.getLong("id"),
+                resultSet.getString("original_name"),
+                resultSet.getString("stored_name"),
+                resultSet.getString("mime_type"),
+                resultSet.getLong("size_bytes"),
+                resultSet.getString("iv_base64"),
+                Instant.parse(resultSet.getString("created_at"))
+        );
+    }
+}

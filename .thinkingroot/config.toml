@@ -1,0 +1,86 @@
+[workspace]
+data_dir = ".thinkingroot"
+
+[llm]
+default_provider = "azure"
+extraction_model = "gpt-5.4"
+compilation_model = "gpt-5.4"
+max_concurrent_requests = 5
+request_timeout_secs = 120
+
+[llm.providers.azure]
+resource_name = "openai-gpt-mini"
+deployment = "gpt-5.4"
+api_version = "2024-08-01-preview"
+api_key_env = "AZURE_OPENAI_API_KEY"
+
+[extraction]
+max_chunk_tokens = 2000
+min_confidence = 0.5
+extract_relations = true
+max_retries = 3
+structural_plus_llm = true
+
+[compilation]
+enabled_artifacts = [
+    "entity_page",
+    "architecture_map",
+    "contradiction_report",
+    "health_report",
+]
+output_dir = "artifacts"
+
+[verification]
+staleness_days = 90
+min_freshness = 0.5
+auto_resolve = true
+
+[parsers]
+include_extensions = []
+exclude_patterns = [
+    "target/**",
+    "node_modules/**",
+    ".git/**",
+    ".thinkingroot/**",
+    "*.lock",
+    "package-lock.json",
+    "*.min.js",
+    "*.min.css",
+    "*.map",
+    "dist/**",
+    ".next/**",
+    "build/**",
+]
+respect_gitignore = true
+max_file_size = 1048576
+
+[merge]
+max_health_drop = 0.05
+block_on_contradictions = true
+auto_resolve_threshold = 0.15
+require_approval = false
+protected_branches = []
+
+[streams]
+auto_session_branch = false
+cleanup_enabled = true
+cleanup_interval_secs = 3600
+cleanup_idle_secs = 86400
+cleanup_action = "abandon"
+
+[rooting]
+disabled = false
+provenance_threshold = 0.7
+contradiction_floor = 0.85
+contribute_gate = "advisory"
+predicate_strength_threshold = 0.6
+
+[branch_cache]
+max_entries = 16
+ttl_secs = 300
+disabled = false
+
+[chat]
+persona = "auto"
+verbosity = "auto"
+include_project_doc = true

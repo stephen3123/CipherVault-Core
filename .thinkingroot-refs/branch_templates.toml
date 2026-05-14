@@ -1,0 +1,21 @@
+[[templates]]
+name = "review-required"
+description = "Human review gate — every merge requires an approved Knowledge Proposal with at least one reviewer."
+
+[templates.kind]
+kind = "feature"
+
+[templates.merge_policy]
+policy = "requires_proposal"
+min_reviewers = 1
+required_checks = []
+
+[[templates]]
+name = "agent-sandbox"
+description = "Throwaway scratch branch — Ephemeral merge policy, auto-abandons on session end."
+
+[templates.kind]
+kind = "feature"
+
+[templates.merge_policy]
+policy = "ephemeral"

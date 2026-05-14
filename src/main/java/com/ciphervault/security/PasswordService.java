@@ -1,0 +1,75 @@
+package com.ciphervault.security;
+
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Base64;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public final class PasswordService {
+    private static final String KDF_ALGORITHM = "PBKDF2WithHmacSHA256";
+    private static final int DEFAULT_ITERATIONS = 180_000;
+    private static final int SALT_SIZE_BYTES = 16;
+    private static final int KEY_LENGTH_BITS = 256;
+
+    private final SecureRandom secureRandom = new SecureRandom();
+
+    public int defaultIterations() {
+        return DEFAULT_ITERATIONS;
+    }
+
+    public PasswordHash hashPassword(char[] password) throws GeneralSecurityException {
+        return hashPassword(password, DEFAULT_ITERATIONS);
+    }
+
+    public PasswordHash hashPassword(char[] password, int iterations) throws GeneralSecurityException {
+        byte[] salt = new byte[SALT_SIZE_BYTES];
+        secureRandom.nextBytes(salt);
+        byte[] hash = derive(password, salt, iterations, KEY_LENGTH_BITS);
+        return new PasswordHash(toBase64(hash), toBase64(salt), iterations);
+    }
+
+    public String generateSaltBase64() {
+        byte[] salt = new byte[SALT_SIZE_BYTES];
+        secureRandom.nextBytes(salt);
+        return toBase64(salt);
+    }
+
+    public boolean matches(char[] password, String expectedHashBase64, String saltBase64, int iterations)
+            throws GeneralSecurityException {
+        byte[] actualHash = derive(password, Base64.getDecoder().decode(saltBase64), iterations, KEY_LENGTH_BITS);
+        byte[] expectedHash = Base64.getDecoder().decode(expectedHashBase64);
+        return MessageDigest.isEqual(expectedHash, actualHash);
+    }
+
+    public SecretKey deriveEncryptionKey(char[] password, String saltBase64, int iterations)
+            throws GeneralSecurityException {
+        byte[] derived = derive(password, Base64.getDecoder().decode(saltBase64), iterations, KEY_LENGTH_BITS);
+        return new SecretKeySpec(derived, "AES");
+    }
+
+    private byte[] derive(char[] password, byte[] salt, int iterations, int keyLengthBits)
+            throws GeneralSecurityException {
+        PBEKeySpec keySpec = new PBEKeySpec(password, salt, iterations, keyLengthBits);
+        try {
+            SecretKeyFactory factory = SecretKeyFactory.getInstance(KDF_ALGORITHM);
+            return factory.generateSecret(keySpec).getEncoded();
+        } finally {
+            keySpec.clearPassword();
+        }
+    }
+
+    private String toBase64(byte[] value) {
+        return Base64.getEncoder().encodeToString(value);
+    }
+
+    public static void wipe(char[] chars) {
+        if (chars != null) {
+            Arrays.fill(chars, '\0');
+        }
+    }
+}

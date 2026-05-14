@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "id": "0155b7ed-4795-41af-a7d6-715f4cc71c4f",
+    "workspace": "CipherVault",
+    "title": "analyse the cipher where we add key.",
+    "created_at": "2026-05-10T10:13:42.821459Z",
+    "updated_at": "2026-05-10T10:13:54.293772Z",
+    "message_count": 2
+  },
+  "messages": [
+    {
+      "id": "3dbb7695-fb02-4186-b735-55ff8f0d1e78",
+      "role": "user",
+      "content": "analyse the cipher where we add key.",
+      "model": null,
+      "created_at": "2026-05-10T10:13:42.835389Z",
+      "claims_used": []
+    },
+    {
+      "id": "ed0a2d03-67e0-46bb-9737-c4e2abdbf6ab",
+      "role": "assistant",
+      "content": "Yeah — the key is **not “added into” the cipher** as extra data. It’s used when the cipher is initialized.\n\n### Where that happens\n\nIn `CryptoService.encrypt`, CipherVault creates an AES-GCM cipher and initializes it with the key:\n\n```java\nCipher cipher = Cipher.getInstance(\"AES/GCM/NoPadding\");\ncipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(TAG_LENGTH_BITS, iv));\n```\n\n`src/main/java/com/ciphervault/security/CryptoService.java:18-19`\n\nThat `key` parameter is the encryption key. Same pattern on decrypt:\n\n```java\ncipher.init(Cipher.DECRYPT_MODE, key, new GCMParameterSpec(TAG_LENGTH_BITS, payload.iv()));\n```\n\n`src/main/java/com/ciphervault/security/CryptoService.java:30`\n\nSo the flow is:\n\n1. **Derive key from password**\n   ```java\n   byte[] derived = derive(password, Base64.getDecoder().decode(saltBase64), iterations, KEY_LENGTH_BITS);\n   return new SecretKeySpec(derived, \"AES\");\n   ```\n   `src/main/java/com/ciphervault/security/PasswordService.java:43-46`\n\n2. **Pass that key into the cipher**\n   ```java\n   cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(TAG_LENGTH_BITS, iv));\n   ```\n   `src/main/java/com/ciphervault/security/CryptoService.java:19`\n\n### What “add key” means here\n\nThe actual “adding” is this method signature:\n\n```java\npublic EncryptedPayload encrypt(byte[] plaintext, SecretKey key, byte[] associatedData)\n```\n\n`src/main/java/com/ciphervault/security/CryptoService.java:14`\n\nSo `encrypt(...)` receives a `SecretKey key`, and then `cipher.init(...)` binds that key to the AES-GCM operation.\n\n### Important detail you might have missed\n\nCipherVault also supports **AAD** (associated authenticated data):\n\n```java\nif (associatedData != null && associatedData.length > 0) {\n    cipher.updateAAD(associatedData);\n}\n```\n\n`src/main/java/com/ciphervault/security/CryptoService.java:20-22`\n\nThat data is authenticated but **not encrypted**. So:\n- `key` → used to encrypt/decrypt\n- `associatedData` → checked for integrity only\n\n### One thing that conflicts with the README\n\nThe README says the setup uses **“310 000 iterations”** for PBKDF2 `(README.md)`, but the code currently sets:\n\n```java\nprivate static final int DEFAULT_ITERATIONS = 180_000;\n```\n\n`src/main/java/com/ciphervault/security/PasswordService.java:14`\n\nSo if you were expecting 310k in code, it’s not there right now.\n\n### Short answer\n\nThe key gets applied here:\n\n```java\ncipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(TAG_LENGTH_BITS, iv));\n```\n\n`src/main/java/com/ciphervault/security/CryptoService.java:19`\n\nand that key is derived here:\n\n```java\nreturn new SecretKeySpec(derived, \"AES\");\n```\n\n`src/main/java/com/ciphervault/security/PasswordService.java:46`\n\nIf you meant “where in the app does it call `deriveEncryptionKey(...)` before encrypting files,” I don’t see that call site in the workspace yet from what I checked.",
+      "model": null,
+      "created_at": "2026-05-10T10:13:54.293772Z",
+      "claims_used": []
+    }
+  ]
+}

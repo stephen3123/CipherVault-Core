@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "id": "d1a5e987-e6d6-4f84-b365-83bc4a74e05a",
+    "workspace": "CipherVault",
+    "title": "hy",
+    "created_at": "2026-05-13T00:13:22.173864Z",
+    "updated_at": "2026-05-13T00:13:24.240322Z",
+    "message_count": 2
+  },
+  "messages": [
+    {
+      "id": "93db03fb-cd47-4f1d-92e5-945448d61a75",
+      "role": "user",
+      "content": "hy",
+      "model": null,
+      "created_at": "2026-05-13T00:13:22.189152Z",
+      "claims_used": []
+    },
+    {
+      "id": "c4815a5b-fe17-441f-b91f-5d88c410def3",
+      "role": "assistant",
+      "content": "I don't know what you want from just `hy`. If you meant “hi”: hey.",
+      "model": null,
+      "created_at": "2026-05-13T00:13:24.240322Z",
+      "claims_used": []
+    }
+  ]
+}

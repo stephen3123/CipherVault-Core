@@ -1,0 +1,16 @@
+package com.ciphervault.model;
+
+import java.time.Instant;
+
+public record UserRecord(
+        long id,
+        String passwordHashBase64,
+        String passwordSaltBase64,
+        String keySaltBase64,
+        int passwordIterations,
+        int keyIterations,
+        Instant createdAt,
+        int failedAttempts,
+        Instant lockedUntil
+) {
+}
